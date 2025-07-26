@@ -106,7 +106,7 @@ The `service/` directory contains the core application logic:
 ### Local Development
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ongunakaycom/ibm-developer-skills-network-wtecc-CICD_Practice
    cd ibm-developer-skills-network-wtecc-CICD_Practice
    ```
 
