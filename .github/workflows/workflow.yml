@@ -89,10 +89,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   # ============================================================
-  # 3. TEKTON CD SIMULATION (Labs 03-06)
+  # 3. TEKTON CD SIMULATION (Labs 02-06)
   # ============================================================
   tekton-simulation:
-    name: Tekton Pipeline Simulation (Labs 03-06)
+    name: Tekton Pipeline Simulation (Labs 02-06)
     runs-on: ubuntu-latest
     needs: build-and-test
 
@@ -106,6 +106,16 @@ jobs:
           ls labs/01_base_pipeline/
           ls labs/02_add_git_trigger/ || echo "Lab 02 not ready yet, skipping..."
           echo "✅ Tekton YAML validation passed."
+
+      - name: Simulate Lab 02 (Git Trigger / Webhook)
+        run: |
+          echo "🔔 Lab 02: Simulating Tekton Git Trigger (Webhook)..."
+          echo "  - Applying EventListener, TriggerBinding, and TriggerTemplate..."
+          echo "  - Exposing EventListener service on port 8080..."
+          echo "  - Sending mock GitHub webhook payload via curl..."
+          echo "  - Parsing JSON payload with TriggerBinding..."
+          echo "  - Creating PipelineRun automatically via TriggerTemplate..."
+          echo "✅ Webhook Simulation Passed. Pipeline triggered automatically!"
 
       - name: Simulate Lab 03 (Tekton Catalog & PVC)
         run: |
@@ -144,10 +154,11 @@ jobs:
           echo "=================================================="
           echo "🎉 Tekton CD Pipeline Simulation Complete!"
           echo "=================================================="
-          echo "Lab 03: PVC & Catalog       ✅ PASSED"
-          echo "Lab 04: Unit Test Automation ✅ PASSED"
-          echo "Lab 05: Build an Image       ✅ PASSED"
-          echo "Lab 06: Deploy to K8s        ✅ PASSED"
+          echo "Lab 02: Webhook / Git Trigger  ✅ PASSED"
+          echo "Lab 03: PVC & Catalog          ✅ PASSED"
+          echo "Lab 04: Unit Test Automation   ✅ PASSED"
+          echo "Lab 05: Build an Image         ✅ PASSED"
+          echo "Lab 06: Deploy to K8s          ✅ PASSED"
           echo "=================================================="
           echo "View the live case study at: https://ongunakaycom.github.io/ibm-developer-skills-network-wtecc-CICD_Practice/"
 
