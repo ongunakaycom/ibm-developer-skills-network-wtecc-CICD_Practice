@@ -4,8 +4,16 @@ name: CI workflow
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - '*.md'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - '*.md'
 
 env:
   REGISTRY: ghcr.io
@@ -38,14 +46,13 @@ jobs:
         run: |
           pytest tests/ -v --cov=service --cov-report=term-missing
 
-  # YENİ EKLENEN JOB: Docker Build & Push
   docker-publish:
     name: Build & Publish Docker Image
     runs-on: ubuntu-latest
-    needs: build-and-test # Sadece testler geçerse çalışır
+    needs: build-and-test
     permissions:
       contents: read
-      packages: write # GHCR'ye yazma izni
+      packages: write
 
     steps:
       - name: Checkout
@@ -74,3 +81,32 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    # Sadece docs/ klasöründe değişiklik olduğunda çalışır
+    if: contains(github.event.head_commit.modified, 'docs/') || contains(github.event.head_commit.added, 'docs/')
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
