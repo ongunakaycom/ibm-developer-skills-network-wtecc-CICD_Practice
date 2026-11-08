@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +44,6 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Background pattern */
     body::before {
       content: '';
       position: fixed;
@@ -57,7 +56,6 @@
       z-index: 0;
     }
 
-    /* Noise overlay */
     body::after {
       content: '';
       position: fixed;
@@ -68,7 +66,6 @@
       opacity: 0.02;
     }
 
-    /* Header */
     header {
       position: fixed;
       top: 0;
@@ -149,7 +146,6 @@
       width: 100%;
     }
 
-    /* Hero Section */
     .hero {
       padding: 8rem 2rem 4rem;
       min-height: 100vh;
@@ -208,7 +204,6 @@
       max-width: 600px;
     }
 
-    /* Buttons */
     .btn {
       display: inline-block;
       padding: 0.875rem 1.75rem;
@@ -218,8 +213,6 @@
       font-weight: 600;
       text-decoration: none;
       transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
       cursor: pointer;
     }
 
@@ -245,7 +238,6 @@
       color: var(--accent);
     }
 
-    /* Architecture Section */
     .arch-section {
       padding: 4rem 2rem;
       position: relative;
@@ -309,7 +301,6 @@
       color: var(--accent);
     }
 
-    /* Terminal Simulation Section */
     .terminal-section {
       padding: 4rem 2rem;
       position: relative;
@@ -420,7 +411,6 @@
       50% { opacity: 0; }
     }
 
-    /* Tech Stack Section */
     .tech-section {
       padding: 4rem 2rem;
       position: relative;
@@ -477,7 +467,6 @@
       color: var(--muted);
     }
 
-    /* Security Section */
     .security-section {
       padding: 4rem 2rem;
       background: var(--bg-secondary);
@@ -537,7 +526,6 @@
       font-size: 0.875rem;
     }
 
-    /* Footer */
     footer {
       padding: 3rem 2rem;
       text-align: center;
@@ -550,7 +538,6 @@
       font-size: 0.875rem;
     }
 
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: 0.01ms !important;
@@ -560,19 +547,20 @@
   </style>
 </head>
 <body>
+
   <header>
     <div class="header-container">
       <div class="logo">
         <div class="logo-icon">
           <i class="fa-solid fa-server"></i>
         </div>
-        <span class="logo-text">DevOps Case</span>
+        <span class="logo-text">DevOps Case Study</span>
       </div>
       <nav>
-        <a href="#architecture">Mimari</a>
-        <a href="#terminal">Terminale</a>
-        <a href="#tech">Teknoloji</a>
-        <a href="#security">Güvenlik</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#terminal">Terminal</a>
+        <a href="#tech">Tech Stack</a>
+        <a href="#security">Security</a>
       </nav>
     </div>
   </header>
@@ -588,9 +576,9 @@
       <p>Automated testing, containerization, and Kubernetes deployments.</p>
       <div style="margin: 2rem auto 0; max-width: 500px;">
         <a href="https://github.com/ongunakaycom/ibm-developer-skills-network-wtecc-CICD_Practice" class="btn btn-primary" target="_blank" rel="noopener">
-          <i class="fa-brands fa-github me-2"></i>Repo'ya Git
+          <i class="fa-brands fa-github me-2"></i>View on GitHub
         </a>
-        <a href="#terminal" class="btn btn-secondary" style="margin-left: 1rem;">Simülasyonu Başlat</a>
+        <a href="#terminal" class="btn btn-secondary" style="margin-left: 1rem;">Run Simulation</a>
       </div>
     </div>
   </section>
@@ -603,14 +591,14 @@
           <div class="step-icon"><i class="fa-solid fa-laptop-code"></i></div>
           <div>
             <strong>Developer Push</strong>
-            <span>GitHub'a main'a push</span>
+            <span>Push to main branch</span>
           </div>
         </div>
         <div class="step">
           <div class="step-icon"><i class="fa-brands fa-github"></i></div>
           <div>
             <strong>GitHub Actions (CI)</strong>
-            <span>Test, lint, ve build</span>
+            <span>Test, lint, and build</span>
           </div>
         </div>
       </div>
@@ -623,7 +611,7 @@
           </div>
         </div>
         <div class="step">
-          <div class="step-icon"><i class="fa-solid fa-database"></i></div>
+          <div class="step-icon"><i class="fa-brands fa-kubernetes"></i></div>
           <div>
             <strong>Tekton Pipelines (CD)</strong>
             <span>Kubernetes deployment</span>
@@ -705,7 +693,7 @@
   <section class="security-section" id="security">
     <div class="security-list">
       <div class="security-item">
-        <div class="security-icon"><i class="fa-solidfa-lock"></i></div>
+        <div class="security-icon"><i class="fa-solid fa-lock"></i></div>
         <div class="security-text">
           <strong>Non-root Docker Container</strong>
           <span>Hardened execution user</span>
@@ -730,7 +718,7 @@
 
   <footer>
     <p class="footer-text">
-      Cloud-Native CI/CD Pipeline &middot; DevOps Practice &middot; Built with Vanilla HTML/CSS/JS
+      Cloud-Native CI/CD Pipeline · DevOps Practice · Built with Vanilla HTML/CSS/JS
     </p>
   </footer>
 
@@ -738,33 +726,31 @@
     // DOM Elements
     const startBtn = document.querySelector('#hero .btn-secondary');
     const terminalContent = document.getElementById('terminalContent');
-    const terminalPrompt = document.getElementById('terminalPrompt');
-    const output1 = document.getElementById('output1');
-    const caret = document.getElementById('caret');
-    const terminalContainer = document.querySelector('.terminal-container');
-
+    const startScreen = document.getElementById('startScreen');
+    const simulationSection = document.getElementById('terminal');
+    
     // Simulation state
-    let commandIndex = 0;
+    let currentCommand = 0;
     const commands = [
       {
         command: 'git push origin main',
-        output: 'Enumerating objects: 5 done.\nCounting objects: 100% (5/5), done.\nWriting objects: 100% (5/5), done.\nTotal 5 (delta 2), reused 0 (delta 0)\nGit push OK'
+        output: 'Enumerating objects: 5 done\\nCounting objects: 100% (5/5), done.\\nWriting objects: 100% (5/5), done.\\nTotal 5 (delta 2), reused 0 (delta 0)\\nGit push OK'
       },
       {
-        command: 'gh workflow run \"CI workflow\"',
-        output: '✅ Workflow triggered!\n⏳ Running on ubuntu-latest...\n🐍 Python 3.9 environment setup\n📦 Dependency install (pip)\n🔧 Code Linting (flake8)\n✅ Unit Testing & Coverage (pytest)\n📊 CI Pass / Fail Status: PASSED\nBuild & Test passed successfully!'
+        command: 'gh workflow run "CI workflow"',
+        output: '✅ Workflow triggered!\\n⏳ Running on ubuntu-latest...\\n🐍 Python 3.9 environment setup\\n📦 Dependency install (pip)\\n🔧 Code Linting (flake8)\\n✅ Unit Testing & Coverage (pytest)\\n📊 CI Pass / Fail Status: PASSED\\nBuild & Test passed successfully!'
       },
       {
         command: 'docker build -t ghcr.io/user/cicd-practice:v1 .',
-        output: 'Step 1: Base image layer...done.\nStep 2: Install dependencies...done.\nStep 3: Copy application...done.\nStep 4: Multi-stage optimize...done.\nSuccessfully built and pushed to GHCR.'
+        output: 'Step 1: Base image layer...done.\\nStep 2: Install dependencies...done.\\nStep 3: Copy application...done.\\nStep 4: Multi-stage optimize...done.\\nSuccessfully built and pushed to GHCR.'
       },
       {
         command: 'kubectl apply -f labs/01_base_pipeline/',
-        output: 'tasks.yaml created\npipeline.yaml created\nCustomResourceDefinition updates applied\n✅ Pipeline resources created'
+        output: 'tasks.yaml created\\npipeline.yaml created\\nCustomResourceDefinition updates applied\\n✅ Pipeline resources created'
       },
       {
         command: 'kubectl get pipelineruns',
-        output: 'NAME               STATUS   DURATION   STARTED AGE\ncd-pipeline-run-xxxx   SUCCEEDED   2m30s   3m ago\nPipeline run completed successfully!'
+        output: 'NAME               STATUS   DURATION   STARTED AGE\\ncd-pipeline-run-xxxx   SUCCEEDED   2m30s   3m ago\\nPipeline run completed successfully!'
       }
     ];
 
@@ -777,12 +763,10 @@
         if (i < text.length) {
           element.textContent += text.charAt(i);
           i++;
+          element.scrollIntoView({ behavior: 'smooth', block: 'end' });
         } else {
           clearInterval(timer);
-          // Add newline at end if not already there
-          if (text[text.length - 1] !== '\n' && text[text.length - 1] !== '.') {
-            element.textContent += '\n';
-          }
+          if (onComplete) onComplete();
         }
       }, speed);
       
@@ -790,16 +774,16 @@
     }
 
     // Add output line to terminal
-    function addOutput(text, className = '') {
+    function addOutputLine(text, className = '') {
       const div = document.createElement('div');
       div.className = `output ${className}`;
-      div.textContent = text;
+      div.innerHTML = text.replace(/\n/g, '<br>');
       terminalContent.appendChild(div);
       terminalContent.scrollTop = terminalContent.scrollHeight;
     }
 
     // Add command line
-    function addCommand(command) {
+    function addCommandLine(command) {
       const div = document.createElement('div');
       div.className = 'command';
       div.textContent = command;
@@ -807,45 +791,33 @@
       terminalContent.scrollTop = terminalContent.scrollHeight;
     }
 
-    // Simulate a single command with typewriter effect
     async function simulateCommand(cmd) {
-      addCommand(cmd.command);
+      addCommandLine(cmd.command);
       
-      // Type the output
       const outputDiv = document.createElement('div');
       outputDiv.className = 'output success';
-      outputDiv.style.whiteSpace = 'pre-wrap';
+      outputDiv.innerHTML = cmd.output.replace(/\n/g, '<br>');
       terminalContent.appendChild(outputDiv);
+      terminalContent.scrollTop = terminalContent.scrollHeight;
       
+      // Wait for the typewriter to finish
       return new Promise(resolve => {
-        let i = 0;
-        const text = cmd.output;
-        const speed = 15;
-        
-        outputDiv.textContent = '';
-        
-        const timer = setInterval(() => {
-          if (i < text.length) {
-            outputDiv.textContent += text.charAt(i);
-            i++;
-            terminalContent.scrollTop = terminalContent.scrollHeight;
-          } else {
-            clearInterval(timer);
-            resolve();
-          }
-        }, speed);
+        setTimeout(resolve, (cmd.output.length * 15) + 300);
       });
     }
 
     // Run the full simulation
     async function runSimulation() {
-      // Disable button and show initial state
-      startBtn.disabled = true;
-      startBtn.textContent = 'Yükleniyor...';
+      // Hide start screen, show terminal
+      if (startScreen) {
+        startScreen.style.display = 'none';
+      }
+      if (simulationSection) {
+        simulationSection.style.display = 'block';
+      }
       
       // Initial message
-      terminalContent.innerHTML = '<div class="output">Starting DevOps Pipeline Simulation...</div>';
-      terminalContent.scrollTop = terminalContent.scrollHeight;
+      addOutputLine('Starting DevOps Pipeline Simulation...');
       
       // Run each command sequentially
       for (let i = 0; i < commands.length; i++) {
@@ -853,8 +825,8 @@
         
         // Add small delay between commands
         if (i < commands.length - 1) {
-          await new Promise(r => setTimeout(r, 800));
-          addCommand(''); // empty line
+          await new Promise(r => setTimeout(r, 500));
+          addOutputLine(''); // empty line
         }
       }
       
@@ -862,7 +834,7 @@
       const badgeDiv = document.createElement('div');
       badgeDiv.style.marginTop = '1rem';
       badgeDiv.style.padding = '0.5rem 1rem';
-      badgeDiv.style.background = 'var(--accent-dim)';
+      badgeDiv.style.background = 'rgba(0, 212, 170, 0.15)';
       badgeDiv.style.border = '1px solid var(--accent)';
       badgeDiv.style.borderRadius = '20px';
       badgeDiv.style.display = 'inline-flex';
@@ -877,10 +849,12 @@
       promptDiv.innerHTML = '<span class="prompt">$ </span><span class="caret" id="caret-end"></span>';
       terminalContent.appendChild(promptDiv);
       
-      // Re-enable button
+      // Re-enable button after delay
       setTimeout(() => {
-        startBtn.disabled = false;
-        startBtn.textContent = 'Simülasyonu Başlat';
+        if (startBtn) {
+          startBtn.disabled = false;
+          startBtn.textContent = 'Run Simulation';
+        }
       }, 500);
     }
 

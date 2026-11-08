@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const startScreen = document.getElementById('startScreen');
   const simulationSection = document.getElementById('terminal');
   
-  // Commands data
+  // Commands data - all strings translated to English
   const commands = [
     {
       command: 'git push origin main',
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
       if (startBtn) {
         startBtn.disabled = false;
-        startBtn.textContent = 'Simülasyonu Başlat';
+        startBtn.textContent = 'Run Simulation';
       }
     }, 1000);
   }
