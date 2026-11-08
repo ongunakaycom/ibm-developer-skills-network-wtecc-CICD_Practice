@@ -722,35 +722,42 @@
     </p>
   </footer>
 
-  <script>
+<script>
     // DOM Elements
     const startBtn = document.querySelector('#hero .btn-secondary');
     const terminalContent = document.getElementById('terminalContent');
-    const startScreen = document.getElementById('startScreen');
     const simulationSection = document.getElementById('terminal');
     
-    // Simulation state
-    let currentCommand = 0;
+    // Simulation state - Full CI/CD Pipeline (Labs 02-06)
     const commands = [
       {
         command: 'git push origin main',
-        output: 'Enumerating objects: 5 done\\nCounting objects: 100% (5/5), done.\\nWriting objects: 100% (5/5), done.\\nTotal 5 (delta 2), reused 0 (delta 0)\\nGit push OK'
+        output: 'Enumerating objects: 5, done.\nCounting objects: 100% (5/5), done.\nWriting objects: 100% (5/5), done.\nTotal 5 (delta 2), reused 0 (delta 0)\nGit push OK'
       },
       {
         command: 'gh workflow run "CI workflow"',
-        output: '✅ Workflow triggered!\\n⏳ Running on ubuntu-latest...\\n🐍 Python 3.9 environment setup\\n📦 Dependency install (pip)\\n🔧 Code Linting (flake8)\\n✅ Unit Testing & Coverage (pytest)\\n📊 CI Pass / Fail Status: PASSED\\nBuild & Test passed successfully!'
+        output: '✅ Workflow triggered!\n⏳ Running on ubuntu-latest...\n🐍 Python 3.9 environment setup\n📦 Dependency install (pip)\n🔧 Code Linting (flake8)\n✅ Unit Testing & Coverage (pytest)\n📊 CI Pass / Fail Status: PASSED\nBuild & Test passed successfully!'
       },
       {
         command: 'docker build -t ghcr.io/user/cicd-practice:v1 .',
-        output: 'Step 1: Base image layer...done.\\nStep 2: Install dependencies...done.\\nStep 3: Copy application...done.\\nStep 4: Multi-stage optimize...done.\\nSuccessfully built and pushed to GHCR.'
+        output: 'Step 1: Base image layer...done.\nStep 2: Install dependencies...done.\nStep 3: Copy application...done.\nStep 4: Multi-stage optimize...done.\nSuccessfully built and pushed to GHCR.'
       },
       {
-        command: 'kubectl apply -f labs/01_base_pipeline/',
-        output: 'tasks.yaml created\\npipeline.yaml created\\nCustomResourceDefinition updates applied\\n✅ Pipeline resources created'
+        command: 'kubectl apply -f labs/02_add_git_trigger/',
+        output: 'eventlistener.yaml created\ntriggerbinding.yaml created\ntriggertemplate.yaml created\n✅ Webhook listener active on port 8080.'
+      },
+      {
+        // DÜZELTME: Tek tırnak yerine çift tırnak ve kaçış karakteri kullanıldı
+        command: 'curl -X POST http://localhost:8080 -H "Content-Type: application/json" -H "X-GitHub-Event: push" -d "{\\"ref\\": \\"refs/heads/main\\", \\"repository\\": {\\"html_url\\": \\"https://github.com/ongunakaycom/ibm-developer-skills-network-wtecc-CICD_Practice.git\\"}}"',
+        output: 'Sending mock GitHub webhook payload...\nEventListener caught it!\nTriggerBinding parsed repo-url.\nTriggerTemplate created PipelineRun automatically.'
       },
       {
         command: 'kubectl get pipelineruns',
-        output: 'NAME               STATUS   DURATION   STARTED AGE\\ncd-pipeline-run-xxxx   SUCCEEDED   2m30s   3m ago\\nPipeline run completed successfully!'
+        output: 'NAME: cd-pipeline-run-xxxx\nSTATUS: SUCCEEDED\nPipeline triggered automatically by Webhook!'
+      },
+      {
+        command: 'kubectl describe pipelinerun cd-pipeline-run-xxxx',
+        output: 'Tasks:\n  clone (Completed)\n  lint (Completed)\n  tests (Completed)\n  build (Completed)\n  deploy (Completed)\n✅ All Labs 02-06 simulated successfully!'
       }
     ];
 
@@ -766,7 +773,6 @@
           element.scrollIntoView({ behavior: 'smooth', block: 'end' });
         } else {
           clearInterval(timer);
-          if (onComplete) onComplete();
         }
       }, speed);
       
@@ -777,6 +783,7 @@
     function addOutputLine(text, className = '') {
       const div = document.createElement('div');
       div.className = `output ${className}`;
+      // \n karakterlerini <br> etiketine çevir
       div.innerHTML = text.replace(/\n/g, '<br>');
       terminalContent.appendChild(div);
       terminalContent.scrollTop = terminalContent.scrollHeight;
@@ -808,13 +815,12 @@
 
     // Run the full simulation
     async function runSimulation() {
-      // Hide start screen, show terminal
-      if (startScreen) {
-        startScreen.style.display = 'none';
-      }
       if (simulationSection) {
         simulationSection.style.display = 'block';
       }
+      
+      // Clear previous content
+      terminalContent.innerHTML = '';
       
       // Initial message
       addOutputLine('Starting DevOps Pipeline Simulation...');
@@ -843,12 +849,6 @@
       badgeDiv.innerHTML = '<span style="color: var(--success);">✓</span> Pipeline Status: <strong style="color: var(--success);">SUCCESS</strong>';
       terminalContent.appendChild(badgeDiv);
       
-      // Add final prompt
-      const promptDiv = document.createElement('div');
-      promptDiv.className = 'terminal-prompt';
-      promptDiv.innerHTML = '<span class="prompt">$ </span><span class="caret" id="caret-end"></span>';
-      terminalContent.appendChild(promptDiv);
-      
       // Re-enable button after delay
       setTimeout(() => {
         if (startBtn) {
@@ -858,24 +858,10 @@
       }, 500);
     }
 
-    // Initialize caret blinking
-    function initCaret() {
-      if (caret) {
-        caret.style.animation = 'blink 1s step-end infinite';
-      }
-      const caretEnd = document.getElementById('caret-end');
-      if (caretEnd) {
-        caretEnd.style.animation = 'blink 1s step-end infinite';
-      }
-    }
-
     // Button click handler
     if (startBtn) {
       startBtn.addEventListener('click', runSimulation);
     }
-
-    // Init on load
-    document.addEventListener('DOMContentLoaded', initCaret);
-  </script>
+</script>
 </body>
 </html>
