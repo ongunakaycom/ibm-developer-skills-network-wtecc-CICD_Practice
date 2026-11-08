@@ -5,33 +5,41 @@ document.addEventListener('DOMContentLoaded', function() {
   const startScreen = document.getElementById('startScreen');
   const simulationSection = document.getElementById('terminal');
   
-  // Commands data - all strings translated to English
+  // Commands data - full CI/CD pipeline with Labs 02-06
   const commands = [
     {
       command: 'git push origin main',
-      output: 'Enumerating objects: 5 done\\nCounting objects: 100% (5/5), done.\\nWriting objects: 100% (5/5), done.\\nTotal 5 (delta 2), reused 0 (delta 0)\\nGit push OK'
+      output: 'Enumerating objects: 5, done. Git push OK'
     },
     {
       command: 'gh workflow run "CI workflow"',
-      output: '✅ Workflow triggered!\\n⏳ Running on ubuntu-latest...\\n🐍 Python 3.9 environment setup\\n📦 Dependency install (pip)\\n🔧 Code Linting (flake8)\\n✅ Unit Testing & Coverage (pytest)\\n📊 CI Pass / Fail Status: PASSED\\nBuild & Test passed successfully!'
+      output: '✅ Workflow triggered! Running on ubuntu-latest... 🐍 Python 3.9 environment setup 📦 Dependency install (pip) 🔧 Code Linting (flake8) ✅ Unit Testing & Coverage (pytest) 📊 CI Pass / Fail Status: PASSED. Build & Test passed successfully!'
     },
     {
       command: 'docker build -t ghcr.io/user/cicd-practice:v1 .',
-      output: 'Step 1: Base image layer...done.\\nStep 2: Install dependencies...done.\\nStep 3: Copy application...done.\\nStep 4: Multi-stage optimize...done.\\nSuccessfully built and pushed to GHCR.'
+      output: 'Step 1: Base image layer...done. Step 2: Install dependencies...done. Step 3: Copy application...done. Step 4: Multi-stage optimize...done. Successfully built and pushed to GHCR.'
     },
     {
-      command: 'kubectl apply -f labs/01_base_pipeline/',
-      output: 'tasks.yaml created\\npipeline.yaml created\\nCustomResourceDefinition updates applied\\n✅ Pipeline resources created'
+      command: 'kubectl apply -f labs/02_add_git_trigger/',
+      output: 'eventlistener.yaml created, triggerbinding.yaml created, triggertemplate.yaml created. ✅ Webhook listener active on port 8080.'
+    },
+    {
+      command: 'curl -X POST http://localhost:8080 -H "Content-Type: application/json" -H "X-GitHub-Event: push" -d \'{"ref": "refs/heads/main", "repository": {"html_url": "https://github.com/ongunakaycom/ibm-developer-skills-network-wtecc-CICD_Practice.git"}} \'',
+      output: 'Sending mock GitHub webhook payload... EventListener caught it! TriggerBinding parsed repo-url. TriggerTemplate created PipelineRun automatically.'
     },
     {
       command: 'kubectl get pipelineruns',
-      output: 'NAME               STATUS   DURATION   STARTED AGE\\ncd-pipeline-run-xxxx   SUCCEEDED   2m30s   3m ago\\nPipeline run completed successfully!'
+      output: 'NAME: cd-pipeline-run-xxxx STATUS: SUCCEEDED. Pipeline triggered automatically by Webhook!'
+    },
+    {
+      command: 'kubectl describe pipelinerun cd-pipeline-run-xxxx',
+      output: 'Tasks: clone (Completed), lint (Completed), tests (Completed), build (Completed), deploy (Completed). ✅ All Labs 02-06 simulated successfully!'
     }
   ];
 
   let currentCommand = 0;
 
-  function typeText(element, text, speed = 15, onComplete) {
+  function typeWriter(element, text, speed = 20) {
     let i = 0;
     element.textContent = '';
     
@@ -42,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         element.scrollIntoView({ behavior: 'smooth', block: 'end' });
       } else {
         clearInterval(timer);
-        if (onComplete) onComplete();
       }
     }, speed);
     
