@@ -6,6 +6,9 @@
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestration-326CE5?logo=kubernetes&logoColor=white)](https://kubernetes.io/)
 [![Python](https://img.shields.io/badge/Python-3.9-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
+[![Code Quality](https://img.shields.io/badge/Code%20Quality-flake8-green)](https://github.com/ongunakaycom/ibm-developer-skills-network-wtecc-CICD_Practice/actions/workflows/workflow.yml)
+[![Test Coverage](https://img.shields.io/badge/Test%20Coverage-pytest-brightgreen)](https://github.com/ongunakaycom/ibm-developer-skills-network-wtecc-CICD_Practice/actions/workflows/workflow.yml)
+[![Docker Image](https://img.shields.io/badge/Docker-Image-2496ED?logo=docker&logoColor=white)](https://github.com/ongunakaycom/ibm-developer-skills-network-wtecc-CICD_Practice/pkgs/container/cicd-practice)
 
 A production-grade Python (Flask) application demonstrating modern containerization, automated CI with GitHub Actions, and cloud-native continuous deployment using **Tekton Pipelines** on **Kubernetes**. 
 
